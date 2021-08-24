@@ -16,6 +16,9 @@ class Router {
     routerDelegate = router.routerDelegate;
     navigatorKey = router.navigatorKey;
   }
+
+  /// Use routerDelegate to write your router method below
+  /// like `push`, `pop`...
 }
 
 abstract class BaseNavigator {

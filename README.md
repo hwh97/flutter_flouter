@@ -1,5 +1,6 @@
 # flutter_flouter
-A new Flutter plugin for Flutter based on Navigator 2.0 and Regexp.Inspired by [flouter](git@github.com:Kleak/flouter.git)
+A new Flutter plugin for Flutter based on Navigator 2.0 and Regexp.
+Inspired by [flouter](git@github.com:Kleak/flouter.git).
 
 ## Getting Started
 
