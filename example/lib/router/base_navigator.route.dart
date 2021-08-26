@@ -30,12 +30,6 @@ class $BaseNavigator implements BaseNavigator {
       ],
     );
   }
-
-  @override
-  RouteInformationParser<Uri> routeInformationParser = FlouterRouteInformationParser();
-
-  @override
-  GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 }
 
 /// define pages

@@ -3,18 +3,17 @@ import 'package:flutter_flouter/flutter_flouter.dart';
 import 'package:flutter_flouter_example/router/base_navigator.route.dart';
 
 final Router router = Router([]);
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class Router {
   late final BaseNavigator router;
   late final RouteInformationParser<Uri> routeInformationParser;
   late final FlouterRouterDelegate routerDelegate;
-  late final GlobalKey<NavigatorState> navigatorKey;
 
   Router(List<NavigatorObserver> observer) {
     router = BaseNavigator(observer);
-    routeInformationParser = router.routeInformationParser;
+    routeInformationParser = FlouterRouteInformationParser();
     routerDelegate = router.routerDelegate;
-    navigatorKey = router.navigatorKey;
   }
 
   /// Use routerDelegate to write your router method below
@@ -26,9 +25,5 @@ abstract class BaseNavigator {
     return $BaseNavigator(observers);
   }
 
-  GlobalKey<NavigatorState> get navigatorKey;
-
   FlouterRouterDelegate get routerDelegate;
-
-  RouteInformationParser<Uri> get routeInformationParser;
 }
