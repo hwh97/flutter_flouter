@@ -6,11 +6,16 @@ import 'package:flutter_flouter/src/typedef.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'flouter_observer.dart';
 import 'flouter_uri.dart';
 
 /// a [RouterDelegate] based on [FlouterUri]
 class FlouterRouterDelegate extends RouterDelegate<Uri>
-    with ChangeNotifier, PopNavigatorRouterDelegateMixin<Uri> {
+    with
+        ChangeNotifier,
+        PopNavigatorRouterDelegateMixin<Uri>,
+        NavigatorObserver,
+        FlouterObserver {
   final GlobalKey<NavigatorState> navigatorKey;
   final List<NavigatorObserver> observers;
   final Map<RegExp, PageBuilder> routes;
@@ -50,7 +55,10 @@ class FlouterRouterDelegate extends RouterDelegate<Uri>
   Widget build(BuildContext context) {
     return Navigator(
       key: navigatorKey,
-      observers: observers,
+      observers: [
+        ...observers,
+        this,
+      ],
       pages: List.from(pages),
       onPopPage: (route, result) {
         if (!route.didPop(result)) {
@@ -161,7 +169,7 @@ class FlouterRouterDelegate extends RouterDelegate<Uri>
     _internalPages.removeAt(index);
     FlouterUri flouterUri = _internalUris.removeAt(index);
     notifyListeners();
-    return flouterUri.complete(result);
+    return flouterUri.complete(result, completeWaitDuration);
   }
 
   /// allow you to remove the last [Uri] and the corresponding [Page]
@@ -169,7 +177,7 @@ class FlouterRouterDelegate extends RouterDelegate<Uri>
     _internalPages.removeLast();
     FlouterUri flouterUri = _internalUris.removeLast();
     notifyListeners();
-    return flouterUri.complete(result);
+    return flouterUri.complete(result, completeWaitDuration);
   }
 
   /// returns whether the pop request should be considered handled.

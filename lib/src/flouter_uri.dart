@@ -7,9 +7,11 @@ class FlouterUri<T> {
 
   Future<dynamic> get popped => _popCompleter.future;
 
-  void complete(T? result) {
+  void complete(T? result, Duration completeWaitDuration) {
     if (!_popCompleter.isCompleted) {
-      return _popCompleter.complete(result);
+      Future.delayed(completeWaitDuration).then((_){
+        _popCompleter.complete(result);
+      });
     }
   }
 
