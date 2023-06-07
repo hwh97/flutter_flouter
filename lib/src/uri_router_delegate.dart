@@ -13,15 +13,14 @@ import 'flouter_uri.dart';
 class FlouterRouterDelegate extends RouterDelegate<Uri>
     with
         ChangeNotifier,
-        PopNavigatorRouterDelegateMixin<Uri>,
-        NavigatorObserver,
-        FlouterObserver {
+        PopNavigatorRouterDelegateMixin<Uri> {
   final GlobalKey<NavigatorState> navigatorKey;
   final List<NavigatorObserver> observers;
   final Map<RegExp, PageBuilder> routes;
   final PageBuilder? pageNotFound;
   final _internalPages = <Page>[];
   final _internalUris = <FlouterUri>[];
+  final _flouterObserver = FlouterObserver();
   bool _skipNext = false;
 
   FlouterRouterDelegate({
@@ -57,7 +56,7 @@ class FlouterRouterDelegate extends RouterDelegate<Uri>
       key: navigatorKey,
       observers: [
         ...observers,
-        this,
+        _flouterObserver,
       ],
       pages: List.from(pages),
       onPopPage: (route, result) {
@@ -169,7 +168,7 @@ class FlouterRouterDelegate extends RouterDelegate<Uri>
     _internalPages.removeAt(index);
     FlouterUri flouterUri = _internalUris.removeAt(index);
     notifyListeners();
-    return flouterUri.complete(result, completeWaitDuration);
+    return flouterUri.complete(result, _flouterObserver.completeWaitDuration);
   }
 
   /// allow you to remove the last [Uri] and the corresponding [Page]
@@ -177,7 +176,7 @@ class FlouterRouterDelegate extends RouterDelegate<Uri>
     _internalPages.removeLast();
     FlouterUri flouterUri = _internalUris.removeLast();
     notifyListeners();
-    return flouterUri.complete(result, completeWaitDuration);
+    return flouterUri.complete(result, _flouterObserver.completeWaitDuration);
   }
 
   /// returns whether the pop request should be considered handled.

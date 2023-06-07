@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 
 const _kCompleteWaitDuration = Duration(milliseconds: 200);
 
-mixin FlouterObserver on NavigatorObserver {
+class FlouterObserver extends NavigatorObserver {
   Duration? _completeWaitDuration;
 
   Duration get completeWaitDuration =>
